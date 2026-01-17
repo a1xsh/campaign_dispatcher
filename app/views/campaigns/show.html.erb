@@ -1,0 +1,50 @@
+<div class="max-w-5xl mx-auto p-8">
+  <%= turbo_stream_from @campaign %>
+
+  <div class="mb-6">
+    <%= link_to "← Back", root_path, class: "text-blue-600 hover:text-blue-800 mb-4 inline-block" %>
+
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h1 class="text-2xl font-bold"><%= @campaign.title %></h1>
+        <%= turbo_frame_tag "campaign_status" do %>
+          <div class="text-sm text-gray-600 mt-1">
+            Status: <%= @campaign.status %>
+          </div>
+        <% end %>
+      </div>
+
+      <%= turbo_frame_tag "start_button" do %>
+        <% if @campaign.pending? %>
+          <%= button_to "Start Dispatch", start_campaign_path(@campaign),
+                method: :post,
+                class: "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%= turbo_frame_tag "campaign_progress" do %>
+      <%= render "progress", campaign: @campaign %>
+    <% end %>
+  </div>
+
+  <div class="bg-white border rounded-lg overflow-hidden">
+    <div class="px-4 py-3 bg-gray-50 border-b">
+      <h2 class="font-semibold">Recipients</h2>
+    </div>
+    <table class="w-full">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-4 py-2 text-left text-sm font-medium">Name</th>
+          <th class="px-4 py-2 text-left text-sm font-medium">Contact</th>
+          <th class="px-4 py-2 text-left text-sm font-medium">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @recipients.each do |r| %>
+          <%= render "recipients/row", recipient: r %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>

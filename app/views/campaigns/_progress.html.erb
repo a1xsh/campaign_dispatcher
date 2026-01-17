@@ -1,0 +1,15 @@
+<div class="bg-gray-50 border rounded p-4 mb-4">
+  <div class="font-medium mb-2">Progress</div>
+  <div class="text-sm text-gray-700">
+    Sent <strong><%= campaign.sent_count %></strong> of <strong><%= campaign.total_count %></strong>
+    <% if campaign.processing? %>
+      <span class="ml-2 text-blue-600">(processing...)</span>
+    <% end %>
+  </div>
+  <% if campaign.total_count > 0 %>
+    <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+      <div class="bg-blue-600 h-2 rounded-full transition-all duration-300" 
+           style="width: <%= (campaign.sent_count.to_f / campaign.total_count * 100).round %>%"></div>
+    </div>
+  <% end %>
+</div>

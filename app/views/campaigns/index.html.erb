@@ -1,0 +1,104 @@
+<div class="max-w-4xl mx-auto p-8">
+  <h1 class="text-3xl font-bold mb-8">Campaigns</h1>
+
+  <% if flash[:alert] %>
+    <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded">
+      <%= flash[:alert] %>
+    </div>
+  <% end %>
+
+  <div class="bg-white border rounded-lg p-6 mb-8">
+    <h2 class="text-xl font-semibold mb-4">New Campaign</h2>
+
+    <%= form_with model: @campaign, url: campaigns_path, method: :post, class: "space-y-4", data: { controller: "recipients" } do |f| %>
+      <% if @campaign.errors.any? %>
+        <div class="mb-4 p-3 bg-red-50 border border-red-200 text-red-800 rounded">
+          <ul class="list-disc list-inside">
+            <% @campaign.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div>
+        <label class="block text-sm font-medium mb-1">Title</label>
+        <%= f.text_field :title, 
+              class: "w-full px-3 py-2 border rounded",
+              placeholder: "Campaign title" %>
+      </div>
+
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <label class="block text-sm font-medium">Recipients</label>
+          <button type="button" 
+                  data-action="click->recipients#add"
+                  class="text-sm text-blue-600 hover:text-blue-800">
+            + Add Recipient
+          </button>
+        </div>
+        
+        <div data-recipients-target="container" class="space-y-2">
+          <div data-recipient-fields class="flex gap-2">
+            <input type="text" 
+                   name="campaign[recipients][][name]" 
+                   class="flex-1 px-3 py-2 border rounded"
+                   placeholder="Name" />
+            <input type="text" 
+                   name="campaign[recipients][][contact]" 
+                   class="flex-1 px-3 py-2 border rounded"
+                   placeholder="Email or phone" />
+            <button type="button" 
+                    data-action="click->recipients#remove"
+                    class="px-3 py-2 text-red-600 hover:bg-red-50 rounded">
+              Remove
+            </button>
+          </div>
+          <template data-recipient-template>
+            <div data-recipient-fields class="flex gap-2">
+              <input type="text" 
+                     name="campaign[recipients][][name]" 
+                     class="flex-1 px-3 py-2 border rounded"
+                     placeholder="Name" />
+              <input type="text" 
+                     name="campaign[recipients][][contact]" 
+                     class="flex-1 px-3 py-2 border rounded"
+                     placeholder="Email or phone" />
+              <button type="button" 
+                      data-action="click->recipients#remove"
+                      class="px-3 py-2 text-red-600 hover:bg-red-50 rounded">
+                Remove
+              </button>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <%= submit_tag "Create", class: "px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+    <% end %>
+  </div>
+
+  <div class="bg-white border rounded-lg p-6">
+    <h2 class="text-xl font-semibold mb-4">Your Campaigns</h2>
+    
+    <% if @campaigns.any? %>
+      <div class="space-y-2">
+        <% @campaigns.each do |c| %>
+          <%= link_to campaign_path(c), class: "block p-4 border rounded hover:bg-gray-50" do %>
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-medium"><%= c.title %></div>
+                <div class="text-sm text-gray-600">
+                  Status: <%= c.status %> • <%= c.total_count %> recipient<%= 's' if c.total_count != 1 %>
+                </div>
+              </div>
+              <span class="text-gray-400">→</span>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <p class="text-gray-500 text-center py-8">No campaigns yet.</p>
+    <% end %>
+  </div>
+</div>
