@@ -1,0 +1,13 @@
+<tr id="<%= dom_id(recipient) %>" class="border-t hover:bg-gray-50 <%= 'bg-green-50' if recipient.sent? %>">
+  <td class="px-4 py-3"><%= recipient.name %></td>
+  <td class="px-4 py-3"><%= recipient.contact %></td>
+  <td class="px-4 py-3">
+    <span class="px-2 py-1 rounded text-xs <%= 
+      recipient.queued? ? 'bg-yellow-100 text-yellow-800' : 
+      recipient.sent? ? 'bg-green-100 text-green-800' : 
+      'bg-red-100 text-red-800' 
+    %>">
+      <%= recipient.status %>
+    </span>
+  </td>
+</tr>

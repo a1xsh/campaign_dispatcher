@@ -1,0 +1,16 @@
+.git
+.gitignore
+.bundle
+log/*
+tmp/*
+storage/*
+node_modules
+.env
+.env.*
+!.env.example
+coverage
+.byebug_history
+.DS_Store
+*.swp
+*.swo
+*~
