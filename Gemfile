@@ -66,7 +66,7 @@ group :development, :test do
   gem "capybara", "~> 3.40"
 
   # Selenium WebDriver for Capybara [https://github.com/SeleniumHQ/selenium]
-  gem "selenium-webdriver", "~> 4.0"
+  gem "selenium-webdriver", "~> 4.40"
 end
 
 group :development do
